@@ -9,13 +9,11 @@ const { t } = fieldDecoratorKit;
 // 自己的业务
 const domain = "aibeings-vip.xiaoice.com";
 const baseUrl = `http://${domain}`;
-// const subKey = "ee87fc73d4d94ad391084c51ab439dc7"; // 数字人服务的subkey
 const vhBizIds = {
   "张淑芬-保健品种草": "VHPUBJB6TBUCMUE",
   "静怡-女主播": "VHPHTWFSQSGASD4",
   "浩南-电子产品种草": "VHPU4EK272YHVYK",
 };
-let timerRef: NodeJS.Timeout | null = null;
 
 interface Response {
   code: number;
@@ -35,6 +33,7 @@ fieldDecoratorKit.setDecorator({
     "zh-CN": {
       szrfwkey: "数字人服务key",
       keyHolder: "请联系对接人获取subkey",
+      noMatchId: "无效的数字演员ID，请联系对接人获取",
       szryyid: "数字演员",
       spzt: "视频主题",
       kbwa: "口播文案",
@@ -43,6 +42,8 @@ fieldDecoratorKit.setDecorator({
     "en-US": {
       szrfwkey: "Digital Human Service Key",
       keyHolder: "Please contact the connector to obtain the subkey",
+      undefinedId:
+        "Invalid Digital Actor ID, please contact the connector to obtain",
       szryyid: "Digital Actor ID",
       spzt: "Video Theme",
       kbwa: "Script",
@@ -51,6 +52,7 @@ fieldDecoratorKit.setDecorator({
     "ja-JP": {
       szrfwkey: "デジタルヒューマンサービスキー",
       keyHolder: "接続者に連絡してサブキーを取得してください",
+      undefinedId: "無効なデジタルアクターID、接続者に連絡して取得してください",
       szryyid: "デジタルアクターID",
       spzt: "ビデオテーマ",
       kbwa: "スクリプト",
@@ -137,16 +139,26 @@ fieldDecoratorKit.setDecorator({
   ) => {
     const { subKey, vhBizId, topic, content, imageUrl } = formData;
     try {
-      if (timerRef) {
-        clearInterval(timerRef);
-        timerRef = null;
+      // 校验必填参数
+      if (
+        !subKey ||
+        !vhBizId ||
+        !topic ||
+        !content ||
+        !imageUrl ||
+        imageUrl.length === 0
+      ) {
+        return { code: FieldExecuteCode.Success, data: [] };
       }
       let trueVhBizId = vhBizIds[vhBizId];
       if (!trueVhBizId) {
-        throw new Error("无效的数字演员ID");
+        return {
+          code: FieldExecuteCode.InvalidArgument,
+          message: String(t("noMatchId")),
+        };
       }
       let params = {
-        content,
+        content, // 口播文案
         topic, // 视频主题
         vhBizId: trueVhBizId, // 数字人id
         materialList: imageUrl.map((item: any) => {
@@ -168,18 +180,7 @@ fieldDecoratorKit.setDecorator({
         .then((res) => res.json());
       console.log("API1 返回结果:", response);
       if (response.data) {
-        // return {
-        //   code: FieldExecuteCode.Success,
-        //   data: [
-        //     {
-        //       fileName: "thumbnail.mp4",
-        //       type: "video/mp4",
-        //       // url: "https://virtualman.oss-cn-beijing.aliyuncs.com/avatar_editor/ac0eb2ef-6ed1-11f0-afcd-7756696fbec5/44948eb.thumbnail.mp4",
-        //       url: "https://commercial-cdn.xiaoice.com/character-ip/xiyangyang-mini-images/open-v2.mp4",
-        //     },
-        //   ],
-        // };
-        // 使用Promise来处理异步操作
+        let timerRef: NodeJS.Timeout | null = null;
         return new Promise((resolve) => {
           let waitTime = 0; // 等待时间，单位为毫秒
           timerRef = setInterval(async () => {

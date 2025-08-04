@@ -14,13 +14,11 @@ var t = _dingtalkDocsCoolApp.fieldDecoratorKit.t;
 // 自己的业务
 var domain = "aibeings-vip.xiaoice.com";
 var baseUrl = "http://".concat(domain);
-// const subKey = "ee87fc73d4d94ad391084c51ab439dc7"; // 数字人服务的subkey
 var vhBizIds = {
   "张淑芬-保健品种草": "VHPUBJB6TBUCMUE",
   "静怡-女主播": "VHPHTWFSQSGASD4",
   "浩南-电子产品种草": "VHPU4EK272YHVYK"
 };
-var timerRef = null;
 // 通过addDomainList添加请求接口的域名
 _dingtalkDocsCoolApp.fieldDecoratorKit.setDomainList([domain]);
 _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
@@ -30,6 +28,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
     "zh-CN": {
       szrfwkey: "数字人服务key",
       keyHolder: "请联系对接人获取subkey",
+      noMatchId: "无效的数字演员ID，请联系对接人获取",
       szryyid: "数字演员",
       spzt: "视频主题",
       kbwa: "口播文案",
@@ -38,6 +37,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
     "en-US": {
       szrfwkey: "Digital Human Service Key",
       keyHolder: "Please contact the connector to obtain the subkey",
+      undefinedId: "Invalid Digital Actor ID, please contact the connector to obtain",
       szryyid: "Digital Actor ID",
       spzt: "Video Theme",
       kbwa: "Script",
@@ -46,6 +46,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
     "ja-JP": {
       szrfwkey: "デジタルヒューマンサービスキー",
       keyHolder: "接続者に連絡してサブキーを取得してください",
+      undefinedId: "無効なデジタルアクターID、接続者に連絡して取得してください",
       szryyid: "デジタルアクターID",
       spzt: "ビデオテーマ",
       kbwa: "スクリプト",
@@ -115,25 +116,34 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
   // formItemParams 为运行时传入的字段参数，对应字段配置里的 formItems （如引用的依赖字段）
   execute: function () {
     var _execute = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(context, formData) {
-      var subKey, vhBizId, topic, content, imageUrl, trueVhBizId, params, response, _t;
+      var subKey, vhBizId, topic, content, imageUrl, trueVhBizId, params, response, timerRef, _t;
       return _regenerator().w(function (_context2) {
         while (1) switch (_context2.p = _context2.n) {
           case 0:
             subKey = formData.subKey, vhBizId = formData.vhBizId, topic = formData.topic, content = formData.content, imageUrl = formData.imageUrl;
             _context2.p = 1;
-            if (timerRef) {
-              clearInterval(timerRef);
-              timerRef = null;
-            }
-            trueVhBizId = vhBizIds[vhBizId];
-            if (trueVhBizId) {
+            if (!(!subKey || !vhBizId || !topic || !content || !imageUrl || imageUrl.length === 0)) {
               _context2.n = 2;
               break;
             }
-            throw new Error("无效的数字演员ID");
+            return _context2.a(2, {
+              code: _dingtalkDocsCoolApp.FieldExecuteCode.Success,
+              data: []
+            });
           case 2:
+            trueVhBizId = vhBizIds[vhBizId];
+            if (trueVhBizId) {
+              _context2.n = 3;
+              break;
+            }
+            return _context2.a(2, {
+              code: _dingtalkDocsCoolApp.FieldExecuteCode.InvalidArgument,
+              message: String(t("noMatchId"))
+            });
+          case 3:
             params = {
               content: content,
+              // 口播文案
               topic: topic,
               // 视频主题
               vhBizId: trueVhBizId,
@@ -145,7 +155,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
               })
             };
             console.log("API1 请求参数:", params, "subKey:", subKey);
-            _context2.n = 3;
+            _context2.n = 4;
             return context.fetch("".concat(baseUrl, "/openapi/aivideo/create"), {
               method: "POST",
               headers: {
@@ -156,13 +166,14 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
             }).then(function (res) {
               return res.json();
             });
-          case 3:
+          case 4:
             response = _context2.v;
             console.log("API1 返回结果:", response);
             if (!response.data) {
-              _context2.n = 4;
+              _context2.n = 5;
               break;
             }
+            timerRef = null;
             return _context2.a(2, new Promise(function (resolve) {
               var waitTime = 0; // 等待时间，单位为毫秒
               timerRef = setInterval(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
@@ -207,27 +218,27 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
                 }, _callee);
               })), 5000);
             }));
-          case 4:
+          case 5:
             console.log("请求失败:", response.message);
             return _context2.a(2, {
               code: _dingtalkDocsCoolApp.FieldExecuteCode.Error,
               message: response.message
             });
-          case 5:
-            _context2.n = 7;
-            break;
           case 6:
-            _context2.p = 6;
+            _context2.n = 8;
+            break;
+          case 7:
+            _context2.p = 7;
             _t = _context2.v;
             console.log("请求出错:", String(_t));
             return _context2.a(2, {
               code: _dingtalkDocsCoolApp.FieldExecuteCode.Error,
               message: String(_t)
             });
-          case 7:
+          case 8:
             return _context2.a(2);
         }
-      }, _callee2, null, [[1, 6]]);
+      }, _callee2, null, [[1, 7]]);
     }));
     function execute(_x, _x2) {
       return _execute.apply(this, arguments);
