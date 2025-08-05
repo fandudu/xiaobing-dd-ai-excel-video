@@ -16,8 +16,8 @@ var domain = "aibeings-vip.xiaoice.com";
 var baseUrl = "http://".concat(domain);
 var vhBizIds = {
   "张淑芬-保健品种草": "VHPUBJB6TBUCMUE",
-  "静怡-女主播": "VHPHTWFSQSGASD4",
-  "浩南-电子产品种草": "VHPU4EK272YHVYK"
+  "静怡-女主播": "VHP3HOLVRPL9QYR",
+  "文泽-电子产品种草": "VHPWHEUD6XTHZ5J"
 };
 // 通过addDomainList添加请求接口的域名
 _dingtalkDocsCoolApp.fieldDecoratorKit.setDomainList([domain]);

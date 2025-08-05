@@ -11,8 +11,8 @@ const domain = "aibeings-vip.xiaoice.com";
 const baseUrl = `http://${domain}`;
 const vhBizIds = {
   "张淑芬-保健品种草": "VHPUBJB6TBUCMUE",
-  "静怡-女主播": "VHPHTWFSQSGASD4",
-  "浩南-电子产品种草": "VHPU4EK272YHVYK",
+  "静怡-女主播": "VHP3HOLVRPL9QYR",
+  "文泽-电子产品种草": "VHPWHEUD6XTHZ5J",
 };
 
 interface Response {
