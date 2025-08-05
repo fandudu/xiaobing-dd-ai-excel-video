@@ -198,7 +198,9 @@ fieldDecoratorKit.setDecorator({
                 code: FieldExecuteCode.Success,
                 data: [
                   {
-                    fileName: topic || data2?.data.updateTime + ".mp4",
+                    fileName: topic
+                      ? topic + ".mp4"
+                      : data2?.data.updateTime + ".mp4",
                     type: "mp4",
                     url: data2.data?.outputData?.videoUrl,
                   },

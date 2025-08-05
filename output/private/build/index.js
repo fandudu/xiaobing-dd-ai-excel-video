@@ -204,7 +204,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
                         resolve({
                           code: _dingtalkDocsCoolApp.FieldExecuteCode.Success,
                           data: [{
-                            fileName: topic || (data2 === null || data2 === void 0 ? void 0 : data2.data.updateTime) + ".mp4",
+                            fileName: topic ? topic + ".mp4" : (data2 === null || data2 === void 0 ? void 0 : data2.data.updateTime) + ".mp4",
                             type: "mp4",
                             url: (_data2$data2 = data2.data) === null || _data2$data2 === void 0 || (_data2$data2 = _data2$data2.outputData) === null || _data2$data2 === void 0 ? void 0 : _data2$data2.videoUrl
                           }]
