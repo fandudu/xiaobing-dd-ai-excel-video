@@ -93,7 +93,7 @@ fieldDecoratorKit.setDecorator({
         supportTypes: [FieldType.Text],
       },
       validator: {
-        required: true,
+        required: false,
       },
     },
     {
@@ -117,7 +117,7 @@ fieldDecoratorKit.setDecorator({
         supportTypes: [FieldType.Attachment],
       },
       validator: {
-        required: true,
+        required: false,
       },
     },
   ],
@@ -137,17 +137,10 @@ fieldDecoratorKit.setDecorator({
       imageUrl: string[];
     }
   ) => {
-    const { subKey, vhBizId, topic, content, imageUrl } = formData;
+    const { subKey, vhBizId, topic = "", content, imageUrl } = formData;
     try {
       // 校验必填参数
-      if (
-        !subKey ||
-        !vhBizId ||
-        !topic ||
-        !content ||
-        !imageUrl ||
-        imageUrl.length === 0
-      ) {
+      if (!subKey || !vhBizId || !content) {
         return { code: FieldExecuteCode.Success, data: [] };
       }
       let trueVhBizId = vhBizIds[vhBizId];
@@ -161,11 +154,12 @@ fieldDecoratorKit.setDecorator({
         content, // 口播文案
         topic, // 视频主题
         vhBizId: trueVhBizId, // 数字人id
-        materialList: imageUrl.map((item: any) => {
-          return {
-            url: item.tmp_url,
-          };
-        }),
+        materialList:
+          imageUrl?.map((item: any) => {
+            return {
+              url: item.tmp_url,
+            };
+          }) || [], // 产品图
       };
       console.log("API1 请求参数:", params, "subKey:", subKey);
       const response: CreateResponse = await context
@@ -204,7 +198,7 @@ fieldDecoratorKit.setDecorator({
                 code: FieldExecuteCode.Success,
                 data: [
                   {
-                    fileName: topic + ".mp4",
+                    fileName: topic || data2?.data.updateTime + ".mp4",
                     type: "mp4",
                     url: data2.data?.outputData?.videoUrl,
                   },

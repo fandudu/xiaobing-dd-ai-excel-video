@@ -77,7 +77,7 @@
                     ]
                   },
                   "validator": {
-                    "required": true
+                    "required": false
                   }
                 },
                 {
@@ -105,7 +105,7 @@
                     ]
                   },
                   "validator": {
-                    "required": true
+                    "required": false
                   }
                 }
               ]

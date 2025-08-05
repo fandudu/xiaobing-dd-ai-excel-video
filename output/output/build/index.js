@@ -84,7 +84,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
       supportTypes: [_dingtalkDocsCoolApp.FieldType.Text]
     },
     validator: {
-      required: true
+      required: false
     }
   }, {
     key: "content",
@@ -106,7 +106,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
       supportTypes: [_dingtalkDocsCoolApp.FieldType.Attachment]
     },
     validator: {
-      required: true
+      required: false
     }
   }],
   // 定义捷径的返回结果类型
@@ -116,13 +116,13 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
   // formItemParams 为运行时传入的字段参数，对应字段配置里的 formItems （如引用的依赖字段）
   execute: function () {
     var _execute = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(context, formData) {
-      var subKey, vhBizId, topic, content, imageUrl, trueVhBizId, params, response, timerRef, _t;
+      var subKey, vhBizId, _formData$topic, topic, content, imageUrl, trueVhBizId, params, response, timerRef, _t;
       return _regenerator().w(function (_context2) {
         while (1) switch (_context2.p = _context2.n) {
           case 0:
-            subKey = formData.subKey, vhBizId = formData.vhBizId, topic = formData.topic, content = formData.content, imageUrl = formData.imageUrl;
+            subKey = formData.subKey, vhBizId = formData.vhBizId, _formData$topic = formData.topic, topic = _formData$topic === void 0 ? "" : _formData$topic, content = formData.content, imageUrl = formData.imageUrl;
             _context2.p = 1;
-            if (!(!subKey || !vhBizId || !topic || !content || !imageUrl || imageUrl.length === 0)) {
+            if (!(!subKey || !vhBizId || !content)) {
               _context2.n = 2;
               break;
             }
@@ -148,11 +148,11 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
               // 视频主题
               vhBizId: trueVhBizId,
               // 数字人id
-              materialList: imageUrl.map(function (item) {
+              materialList: (imageUrl === null || imageUrl === void 0 ? void 0 : imageUrl.map(function (item) {
                 return {
                   url: item.tmp_url
                 };
-              })
+              })) || [] // 产品图
             };
             console.log("API1 请求参数:", params, "subKey:", subKey);
             _context2.n = 4;
@@ -204,7 +204,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
                         resolve({
                           code: _dingtalkDocsCoolApp.FieldExecuteCode.Success,
                           data: [{
-                            fileName: topic + ".mp4",
+                            fileName: topic || (data2 === null || data2 === void 0 ? void 0 : data2.data.updateTime) + ".mp4",
                             type: "mp4",
                             url: (_data2$data2 = data2.data) === null || _data2$data2 === void 0 || (_data2$data2 = _data2$data2.outputData) === null || _data2$data2 === void 0 ? void 0 : _data2$data2.videoUrl
                           }]
