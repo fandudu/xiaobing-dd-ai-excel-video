@@ -10,9 +10,16 @@ const { t } = fieldDecoratorKit;
 const domain = "aibeings-vip.xiaoice.com";
 const baseUrl = `http://${domain}`;
 const vhBizIds = {
-  "张淑芬-保健品种草": "VHPUBJB6TBUCMUE",
+  "张淑芬-大健康博主": "VHPUBJB6TBUCMUE",
   "静怡-女主播": "VHP3HOLVRPL9QYR",
-  "文泽-电子产品种草": "VHPWHEUD6XTHZ5J",
+  "文泽-科技产品种草": "VHPWHEUD6XTHZ5J",
+  "冰冰-快消博主": "VHPHTWFSQSGASD4",
+  "思悦-课程顾问": "VHPAPKRSKCGGCBU",
+  "安娜-外语": "VHPHBRWKCZ2EDRS",
+  "程也-美业博主": "VHPPKQW5VLGEQ6Q",
+  "黎舒-护士": "VHPRDCRU619GBNC",
+  "李白-古代名人": "VHPRTSSPRX2UZNQ",
+  "可怡-带货女主播": "VHPD1KKPLNOJCF8",
 };
 
 interface Response {
@@ -78,7 +85,7 @@ fieldDecoratorKit.setDecorator({
       component: FormItemComponent.FieldSelect,
       props: {
         mode: "single",
-        supportTypes: [FieldType.SingleSelect],
+        supportTypes: [FieldType.SingleSelect, FieldType.Text],
       },
       validator: {
         required: true,

@@ -15,9 +15,16 @@ var t = _dingtalkDocsCoolApp.fieldDecoratorKit.t;
 var domain = "aibeings-vip.xiaoice.com";
 var baseUrl = "http://".concat(domain);
 var vhBizIds = {
-  "张淑芬-保健品种草": "VHPUBJB6TBUCMUE",
+  "张淑芬-大健康博主": "VHPUBJB6TBUCMUE",
   "静怡-女主播": "VHP3HOLVRPL9QYR",
-  "文泽-电子产品种草": "VHPWHEUD6XTHZ5J"
+  "文泽-科技产品种草": "VHPWHEUD6XTHZ5J",
+  "冰冰-快消博主": "VHPHTWFSQSGASD4",
+  "思悦-课程顾问": "VHPAPKRSKCGGCBU",
+  "安娜-外语": "VHPHBRWKCZ2EDRS",
+  "程也-美业博主": "VHPPKQW5VLGEQ6Q",
+  "黎舒-护士": "VHPRDCRU619GBNC",
+  "李白-古代名人": "VHPRTSSPRX2UZNQ",
+  "可怡-带货女主播": "VHPD1KKPLNOJCF8"
 };
 // 通过addDomainList添加请求接口的域名
 _dingtalkDocsCoolApp.fieldDecoratorKit.setDomainList([domain]);
@@ -70,7 +77,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
     component: _dingtalkDocsCoolApp.FormItemComponent.FieldSelect,
     props: {
       mode: "single",
-      supportTypes: [_dingtalkDocsCoolApp.FieldType.SingleSelect]
+      supportTypes: [_dingtalkDocsCoolApp.FieldType.SingleSelect, _dingtalkDocsCoolApp.FieldType.Text]
     },
     validator: {
       required: true

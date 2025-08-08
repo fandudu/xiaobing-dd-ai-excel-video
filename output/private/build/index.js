@@ -70,7 +70,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
     component: _dingtalkDocsCoolApp.FormItemComponent.FieldSelect,
     props: {
       mode: "single",
-      supportTypes: [_dingtalkDocsCoolApp.FieldType.SingleSelect]
+      supportTypes: [_dingtalkDocsCoolApp.FieldType.SingleSelect, _dingtalkDocsCoolApp.FieldType.Text]
     },
     validator: {
       required: true

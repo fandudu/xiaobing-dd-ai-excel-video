@@ -59,7 +59,8 @@
                   "props": {
                     "mode": "single",
                     "supportTypes": [
-                      "select"
+                      "select",
+                      "text"
                     ]
                   },
                   "validator": {
