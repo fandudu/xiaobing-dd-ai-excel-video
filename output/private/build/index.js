@@ -15,9 +15,16 @@ var t = _dingtalkDocsCoolApp.fieldDecoratorKit.t;
 var domain = "aibeings-vip.xiaoice.com";
 var baseUrl = "http://".concat(domain);
 var vhBizIds = {
-  "张淑芬-保健品种草": "VHPUBJB6TBUCMUE",
+  "张淑芬-大健康博主": "VHPUBJB6TBUCMUE",
   "静怡-女主播": "VHP3HOLVRPL9QYR",
-  "文泽-电子产品种草": "VHPWHEUD6XTHZ5J"
+  "文泽-科技产品种草": "VHPWHEUD6XTHZ5J",
+  "冰冰-快消博主": "VHPHTWFSQSGASD4",
+  "思悦-课程顾问": "VHPAPKRSKCGGCBU",
+  "安娜-外语": "VHPHBRWKCZ2EDRS",
+  "程也-美业博主": "VHPPKQW5VLGEQ6Q",
+  "黎舒-护士": "VHPRDCRU619GBNC",
+  "李白-古代名人": "VHPRTSSPRX2UZNQ",
+  "可怡-带货女主播": "VHPD1KKPLNOJCF8"
 };
 // 通过addDomainList添加请求接口的域名
 _dingtalkDocsCoolApp.fieldDecoratorKit.setDomainList([domain]);
@@ -26,6 +33,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
   // 定义捷径的i18n语言资源
   i18nMap: {
     "zh-CN": {
+      platform: "小冰数字人智能成片",
       szrfwkey: "数字人服务key",
       keyHolder: "请联系对接人获取subkey",
       noMatchId: "无效的数字演员ID，请联系对接人获取",
@@ -35,6 +43,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
       cpt: "产品图"
     },
     "en-US": {
+      platform: "Xiaoice Digital Human Intelligent Video",
       szrfwkey: "Digital Human Service Key",
       keyHolder: "Please contact the connector to obtain the subkey",
       undefinedId: "Invalid Digital Actor ID, please contact the connector to obtain",
@@ -44,6 +53,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
       cpt: "Product Image"
     },
     "ja-JP": {
+      platform: "Xiaoice Digital Human Intelligent Video",
       szrfwkey: "デジタルヒューマンサービスキー",
       keyHolder: "接続者に連絡してサブキーを取得してください",
       undefinedId: "無効なデジタルアクターID、接続者に連絡して取得してください",
@@ -54,17 +64,19 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
     }
   },
   // 定义捷径的入参
-  formItems: [{
-    key: "subKey",
-    label: t("szrfwkey"),
-    component: _dingtalkDocsCoolApp.FormItemComponent.Textarea,
-    props: {
-      placeholder: t("keyHolder")
-    },
-    validator: {
-      required: true
-    }
-  }, {
+  formItems: [
+  // {
+  //   key: "subKey",
+  //   label: t("szrfwkey"),
+  //   component: FormItemComponent.Textarea,
+  //   props: {
+  //     placeholder: t("keyHolder"),
+  //   },
+  //   validator: {
+  //     required: true,
+  //   },
+  // },
+  {
     key: "vhBizId",
     label: t("szryyid"),
     component: _dingtalkDocsCoolApp.FormItemComponent.FieldSelect,
@@ -113,16 +125,34 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
   resultType: {
     type: _dingtalkDocsCoolApp.FieldType.Attachment
   },
+  authorizations: {
+    id: "xiaobing_dd_ai_excel_video",
+    // 授权的id，用于context.fetch第三个参数指定使用
+    platform: t("platform"),
+    // 授权平台，目前可以填写当前平台名称
+    type: _dingtalkDocsCoolApp.AuthorizationType.MultiHeaderToken,
+    // 授权类型
+    // 用户可以填写的key
+    params: [{
+      key: "subscription-key",
+      placeholder: t("keyHolder")
+    }],
+    required: true,
+    // 设置为选填，用户如果填了授权信息，请求中则会携带授权信息，否则不带授权信息
+    label: t("szrfwkey"),
+    // 授权平台，告知用户填写哪个平台的信息
+    tooltips: t("keyHolder")
+  },
   // formItemParams 为运行时传入的字段参数，对应字段配置里的 formItems （如引用的依赖字段）
   execute: function () {
     var _execute = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(context, formData) {
-      var subKey, vhBizId, _formData$topic, topic, content, imageUrl, trueVhBizId, params, response, timerRef, _t;
+      var vhBizId, _formData$topic, topic, content, imageUrl, trueVhBizId, params, response, timerRef, _t;
       return _regenerator().w(function (_context2) {
         while (1) switch (_context2.p = _context2.n) {
           case 0:
-            subKey = formData.subKey, vhBizId = formData.vhBizId, _formData$topic = formData.topic, topic = _formData$topic === void 0 ? "" : _formData$topic, content = formData.content, imageUrl = formData.imageUrl;
+            vhBizId = formData.vhBizId, _formData$topic = formData.topic, topic = _formData$topic === void 0 ? "" : _formData$topic, content = formData.content, imageUrl = formData.imageUrl;
             _context2.p = 1;
-            if (!(!subKey || !vhBizId || !content)) {
+            if (!(!vhBizId || !content)) {
               _context2.n = 2;
               break;
             }
@@ -154,16 +184,14 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
                 };
               })) || [] // 产品图
             };
-            console.log("API1 请求参数:", params, "subKey:", subKey);
             _context2.n = 4;
             return context.fetch("".concat(baseUrl, "/openapi/aivideo/create"), {
               method: "POST",
+              body: JSON.stringify(params),
               headers: {
-                "Content-Type": "application/json",
-                "subscription-key": subKey // subkey
-              },
-              body: JSON.stringify(params)
-            }).then(function (res) {
+                "Content-Type": "application/json"
+              }
+            }, "xiaobing_dd_ai_excel_video").then(function (res) {
               return res.json();
             });
           case 4:
@@ -187,10 +215,9 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
                       return context.fetch("".concat(baseUrl, "/openapi/aivideo/detail/").concat(response.data), {
                         method: "GET",
                         headers: {
-                          "Content-Type": "application/json",
-                          "subscription-key": subKey // subkey
+                          "Content-Type": "application/json"
                         }
-                      });
+                      }, "xiaobing_dd_ai_excel_video");
                     case 1:
                       response2 = _context.v;
                       _context.n = 2;

@@ -3,6 +3,7 @@ import {
   fieldDecoratorKit,
   FormItemComponent,
   FieldExecuteCode,
+  AuthorizationType,
 } from "dingtalk-docs-cool-app";
 const { t } = fieldDecoratorKit;
 
@@ -38,6 +39,7 @@ fieldDecoratorKit.setDecorator({
   // 定义捷径的i18n语言资源
   i18nMap: {
     "zh-CN": {
+      platform: "小冰数字人智能成片",
       szrfwkey: "数字人服务key",
       keyHolder: "请联系对接人获取subkey",
       noMatchId: "无效的数字演员ID，请联系对接人获取",
@@ -47,6 +49,7 @@ fieldDecoratorKit.setDecorator({
       cpt: "产品图",
     },
     "en-US": {
+      platform: "Xiaoice Digital Human Intelligent Video",
       szrfwkey: "Digital Human Service Key",
       keyHolder: "Please contact the connector to obtain the subkey",
       undefinedId:
@@ -57,6 +60,7 @@ fieldDecoratorKit.setDecorator({
       cpt: "Product Image",
     },
     "ja-JP": {
+      platform: "Xiaoice Digital Human Intelligent Video",
       szrfwkey: "デジタルヒューマンサービスキー",
       keyHolder: "接続者に連絡してサブキーを取得してください",
       undefinedId: "無効なデジタルアクターID、接続者に連絡して取得してください",
@@ -68,17 +72,17 @@ fieldDecoratorKit.setDecorator({
   },
   // 定义捷径的入参
   formItems: [
-    {
-      key: "subKey",
-      label: t("szrfwkey"),
-      component: FormItemComponent.Textarea,
-      props: {
-        placeholder: t("keyHolder"),
-      },
-      validator: {
-        required: true,
-      },
-    },
+    // {
+    //   key: "subKey",
+    //   label: t("szrfwkey"),
+    //   component: FormItemComponent.Textarea,
+    //   props: {
+    //     placeholder: t("keyHolder"),
+    //   },
+    //   validator: {
+    //     required: true,
+    //   },
+    // },
     {
       key: "vhBizId",
       label: t("szryyid"),
@@ -132,6 +136,16 @@ fieldDecoratorKit.setDecorator({
   resultType: {
     type: FieldType.Attachment,
   },
+  authorizations: {
+    id: "xiaobing_dd_ai_excel_video", // 授权的id，用于context.fetch第三个参数指定使用
+    platform: t("platform"), // 授权平台，目前可以填写当前平台名称
+    type: AuthorizationType.MultiHeaderToken, // 授权类型
+    // 用户可以填写的key
+    params: [{ key: "subscription-key", placeholder: t("keyHolder") }],
+    required: true, // 设置为选填，用户如果填了授权信息，请求中则会携带授权信息，否则不带授权信息
+    label: t("szrfwkey"), // 授权平台，告知用户填写哪个平台的信息
+    tooltips: t("keyHolder"),
+  },
   // formItemParams 为运行时传入的字段参数，对应字段配置里的 formItems （如引用的依赖字段）
   execute: async (
     context,
@@ -144,10 +158,10 @@ fieldDecoratorKit.setDecorator({
       imageUrl: string[];
     }
   ) => {
-    const { subKey, vhBizId, topic = "", content, imageUrl } = formData;
+    const { vhBizId, topic = "", content, imageUrl } = formData;
     try {
       // 校验必填参数
-      if (!subKey || !vhBizId || !content) {
+      if (!vhBizId || !content) {
         return { code: FieldExecuteCode.Success, data: [] };
       }
       let trueVhBizId = vhBizIds[vhBizId];
@@ -168,16 +182,18 @@ fieldDecoratorKit.setDecorator({
             };
           }) || [], // 产品图
       };
-      console.log("API1 请求参数:", params, "subKey:", subKey);
       const response: CreateResponse = await context
-        .fetch(`${baseUrl}/openapi/aivideo/create`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "subscription-key": subKey, // subkey
+        .fetch(
+          `${baseUrl}/openapi/aivideo/create`,
+          {
+            method: "POST",
+            body: JSON.stringify(params),
+            headers: {
+              "Content-Type": "application/json",
+            },
           },
-          body: JSON.stringify(params),
-        })
+          "xiaobing_dd_ai_excel_video"
+        )
         .then((res) => res.json());
       console.log("API1 返回结果:", response);
       if (response.data) {
@@ -192,9 +208,9 @@ fieldDecoratorKit.setDecorator({
                 method: "GET",
                 headers: {
                   "Content-Type": "application/json",
-                  "subscription-key": subKey, // subkey
                 },
-              }
+              },
+              "xiaobing_dd_ai_excel_video"
             );
             const data2: any = await response2.json();
             if (data2.data?.outputData?.videoUrl) {

@@ -4,6 +4,7 @@
   },
   "i18nMap": {
     "zh-CN": {
+      "platform": "小冰数字人智能成片",
       "szrfwkey": "数字人服务key",
       "keyHolder": "请联系对接人获取subkey",
       "noMatchId": "无效的数字演员ID，请联系对接人获取",
@@ -13,6 +14,7 @@
       "cpt": "产品图"
     },
     "en-US": {
+      "platform": "Xiaoice Digital Human Intelligent Video",
       "szrfwkey": "Digital Human Service Key",
       "keyHolder": "Please contact the connector to obtain the subkey",
       "undefinedId": "Invalid Digital Actor ID, please contact the connector to obtain",
@@ -22,6 +24,7 @@
       "cpt": "Product Image"
     },
     "ja-JP": {
+      "platform": "Xiaoice Digital Human Intelligent Video",
       "szrfwkey": "デジタルヒューマンサービスキー",
       "keyHolder": "接続者に連絡してサブキーを取得してください",
       "undefinedId": "無効なデジタルアクターID、接続者に連絡して取得してください",
@@ -41,17 +44,6 @@
           "props": {
             "schema": {
               "items": [
-                {
-                  "key": "subKey",
-                  "label": "${{szrfwkey}}",
-                  "component": "Textarea",
-                  "props": {
-                    "placeholder": "${{keyHolder}}"
-                  },
-                  "validator": {
-                    "required": true
-                  }
-                },
                 {
                   "key": "vhBizId",
                   "label": "${{szryyid}}",
@@ -109,7 +101,21 @@
                     "required": false
                   }
                 }
-              ]
+              ],
+              "authorizations": {
+                "id": "xiaobing_dd_ai_excel_video",
+                "platform": "${{platform}}",
+                "type": "MultiHeaderToken",
+                "params": [
+                  {
+                    "key": "subscription-key",
+                    "placeholder": "${{keyHolder}}"
+                  }
+                ],
+                "required": true,
+                "label": "${{szrfwkey}}",
+                "tooltips": "${{keyHolder}}"
+              }
             }
           }
         }
