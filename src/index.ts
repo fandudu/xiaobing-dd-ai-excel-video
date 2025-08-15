@@ -145,6 +145,8 @@ fieldDecoratorKit.setDecorator({
     required: true, // 设置为选填，用户如果填了授权信息，请求中则会携带授权信息，否则不带授权信息
     label: t("szrfwkey"), // 授权平台，告知用户填写哪个平台的信息
     tooltips: t("keyHolder"),
+    instructionsUrl:
+      "https://alidocs.dingtalk.com/i/nodes/YQBnd5ExVEjea40qCklxN6B5JyeZqMmz?doc_type=wiki_doc&iframeQuery=utm_source=portal&utm_medium=portal_recent&rnd=0.16896257984287688",
   },
   // formItemParams 为运行时传入的字段参数，对应字段配置里的 formItems （如引用的依赖字段）
   execute: async (

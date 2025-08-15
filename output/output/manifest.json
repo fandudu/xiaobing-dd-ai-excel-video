@@ -114,7 +114,8 @@
                 ],
                 "required": true,
                 "label": "${{szrfwkey}}",
-                "tooltips": "${{keyHolder}}"
+                "tooltips": "${{keyHolder}}",
+                "instructionsUrl": "https://alidocs.dingtalk.com/i/nodes/YQBnd5ExVEjea40qCklxN6B5JyeZqMmz?doc_type=wiki_doc&iframeQuery=utm_source=portal&utm_medium=portal_recent&rnd=0.16896257984287688"
               }
             }
           }
