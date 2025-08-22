@@ -49,10 +49,8 @@ fieldDecoratorKit.setDecorator({
       noMatchId: "无效的数字演员ID，请联系对接人获取",
       szryyid: "数字演员",
       spzt: "视频主题",
-      kbwa: "视频文案(重点建议：单条文案不超过130个字)",
-      waError: "单条文案建议不超过130个字。",
-      cpt: "产品图(重点建议：上传单元格图片不超过1张)",
-      errorCpt: "建议上传单元格图片不超过1张。",
+      kbwa: "视频文案（单条文案建议不超过130个字）",
+      cpt: "产品图（建议上传单元格图片不超过1张）",
     },
     "en-US": {
       platform: "Xiaoice Digital Human Intelligent Video",
@@ -63,9 +61,7 @@ fieldDecoratorKit.setDecorator({
       szryyid: "Digital Actor ID",
       spzt: "Video Theme",
       kbwa: "Video Script (Note: Each script should not exceed 130 characters)",
-      waError: "Each script is recommended to be no more than 130 characters.",
       cpt: "Product Image (Note: Please upload no more than 1 image per cell)",
-      errorCpt: "Please upload no more than 1 image per cell.",
     },
     "ja-JP": {
       platform: "Xiaoice Digital Human Intelligent Video",
@@ -74,37 +70,12 @@ fieldDecoratorKit.setDecorator({
       undefinedId: "無効なデジタルアクターID、接続者に連絡して取得してください",
       szryyid: "デジタルアクターID",
       spzt: "ビデオテーマ",
-      kbwa: "ビデオ文案(重点建议：単条文案不超过130个字)",
-      waError: "単条文案は130字を超えないことをお勧めします。",
-      cpt: "製品画像(重点建议：上传单元格图片不超过1张)",
-      errorCpt: "製品画像は1セルあたり1枚までアップロードしてください。",
+      kbwa: "ビデオ文案（単条文案は130字を超えないことをお勧めします。）",
+      cpt: "製品画像（1セルあたり1枚までアップロードしてください。）",
     },
   },
   // 定义捷径的入参
   formItems: [
-    // {
-    //   key: "subKey",
-    //   label: t("szrfwkey"),
-    //   component: FormItemComponent.Textarea,
-    //   props: {
-    //     placeholder: t("keyHolder"),
-    //   },
-    //   validator: {
-    //     required: true,
-    //   },
-    // },
-    // {
-    //   key: "vhBizId",
-    //   label: t("szryyid"),
-    //   component: FormItemComponent.FieldSelect,
-    //   props: {
-    //     mode: "single",
-    //     supportTypes: [FieldType.SingleSelect, FieldType.Text],
-    //   },
-    //   validator: {
-    //     required: true,
-    //   },
-    // },
     {
       key: "vhBizId",
       label: t("szryyid"),
@@ -191,10 +162,6 @@ fieldDecoratorKit.setDecorator({
       }
       // 校验产品图
       if (imageUrl && imageUrl.length > 1) {
-        return {
-          code: FieldExecuteCode.Error,
-          message: String(t("errorCpt")),
-        };
       }
       // 校验视频文案
       if (content && content.length > 130) {

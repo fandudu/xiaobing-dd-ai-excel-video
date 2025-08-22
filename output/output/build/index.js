@@ -46,10 +46,8 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
       noMatchId: "无效的数字演员ID，请联系对接人获取",
       szryyid: "数字演员",
       spzt: "视频主题",
-      kbwa: "视频文案(重点建议：单条文案不超过130个字)",
-      waError: "单条文案建议不超过130个字。",
-      cpt: "产品图(重点建议：上传单元格图片不超过1张)",
-      errorCpt: "建议上传单元格图片不超过1张。"
+      kbwa: "视频文案（单条文案建议不超过130个字）",
+      cpt: "产品图（建议上传单元格图片不超过1张）"
     },
     "en-US": {
       platform: "Xiaoice Digital Human Intelligent Video",
@@ -59,9 +57,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
       szryyid: "Digital Actor ID",
       spzt: "Video Theme",
       kbwa: "Video Script (Note: Each script should not exceed 130 characters)",
-      waError: "Each script is recommended to be no more than 130 characters.",
-      cpt: "Product Image (Note: Please upload no more than 1 image per cell)",
-      errorCpt: "Please upload no more than 1 image per cell."
+      cpt: "Product Image (Note: Please upload no more than 1 image per cell)"
     },
     "ja-JP": {
       platform: "Xiaoice Digital Human Intelligent Video",
@@ -70,38 +66,12 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
       undefinedId: "無効なデジタルアクターID、接続者に連絡して取得してください",
       szryyid: "デジタルアクターID",
       spzt: "ビデオテーマ",
-      kbwa: "ビデオ文案(重点建议：単条文案不超过130个字)",
-      waError: "単条文案は130字を超えないことをお勧めします。",
-      cpt: "製品画像(重点建议：上传单元格图片不超过1张)",
-      errorCpt: "製品画像は1セルあたり1枚までアップロードしてください。"
+      kbwa: "ビデオ文案（単条文案は130字を超えないことをお勧めします。）",
+      cpt: "製品画像（1セルあたり1枚までアップロードしてください。）"
     }
   },
   // 定义捷径的入参
-  formItems: [
-  // {
-  //   key: "subKey",
-  //   label: t("szrfwkey"),
-  //   component: FormItemComponent.Textarea,
-  //   props: {
-  //     placeholder: t("keyHolder"),
-  //   },
-  //   validator: {
-  //     required: true,
-  //   },
-  // },
-  // {
-  //   key: "vhBizId",
-  //   label: t("szryyid"),
-  //   component: FormItemComponent.FieldSelect,
-  //   props: {
-  //     mode: "single",
-  //     supportTypes: [FieldType.SingleSelect, FieldType.Text],
-  //   },
-  //   validator: {
-  //     required: true,
-  //   },
-  // },
-  {
+  formItems: [{
     key: "vhBizId",
     label: t("szryyid"),
     component: _dingtalkDocsCoolApp.FormItemComponent.SingleSelect,
@@ -188,24 +158,18 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
               data: []
             });
           case 2:
-            if (!(imageUrl && imageUrl.length > 1)) {
-              _context2.n = 3;
-              break;
-            }
-            return _context2.a(2, {
-              code: _dingtalkDocsCoolApp.FieldExecuteCode.Error,
-              message: String(t("errorCpt"))
-            });
-          case 3:
+            // 校验产品图
+            if (imageUrl && imageUrl.length > 1) {}
+            // 校验视频文案
             if (!(content && content.length > 130)) {
-              _context2.n = 4;
+              _context2.n = 3;
               break;
             }
             return _context2.a(2, {
               code: _dingtalkDocsCoolApp.FieldExecuteCode.Error,
               message: String(t("waError"))
             });
-          case 4:
+          case 3:
             params = {
               content: content,
               // 口播文案
@@ -220,7 +184,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
               })) || [] // 产品图
             };
             console.log("API1 入参:", params);
-            _context2.n = 5;
+            _context2.n = 4;
             return context.fetch("".concat(baseUrl, "/openapi/aivideo/create"), {
               method: "POST",
               body: JSON.stringify(params),
@@ -230,11 +194,11 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
             }, "xiaobing_dd_ai_excel_video").then(function (res) {
               return res.json();
             });
-          case 5:
+          case 4:
             response = _context2.v;
             console.log("API1 返回结果:", response);
             if (!response.data) {
-              _context2.n = 6;
+              _context2.n = 5;
               break;
             }
             timerRef = null;
@@ -281,27 +245,27 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
                 }, _callee);
               })), 5000);
             }));
-          case 6:
+          case 5:
             console.log("请求失败:", response.message);
             return _context2.a(2, {
               code: _dingtalkDocsCoolApp.FieldExecuteCode.Error,
               message: response.message
             });
-          case 7:
-            _context2.n = 9;
+          case 6:
+            _context2.n = 8;
             break;
-          case 8:
-            _context2.p = 8;
+          case 7:
+            _context2.p = 7;
             _t = _context2.v;
             console.log("请求出错:", String(_t));
             return _context2.a(2, {
               code: _dingtalkDocsCoolApp.FieldExecuteCode.Error,
               message: String(_t)
             });
-          case 9:
+          case 8:
             return _context2.a(2);
         }
-      }, _callee2, null, [[1, 8]]);
+      }, _callee2, null, [[1, 7]]);
     }));
     function execute(_x, _x2) {
       return _execute.apply(this, arguments);
