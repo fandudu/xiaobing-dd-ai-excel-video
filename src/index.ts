@@ -10,6 +10,9 @@ const { t } = fieldDecoratorKit;
 // 自己的业务
 const domain = "aibeings-vip.xiaoice.com";
 const baseUrl = `http://${domain}`;
+const errorMsgPng =
+  "https://commercial-public-static-resource.oss-cn-beijing.aliyuncs.com/digital-human-resource/build/character-ip/character-assets/images/errorMsg.png?t=" +
+  new Date().getTime();
 const vhBizIds = {
   "张淑芬-大健康博主": "VHPUBJB6TBUCMUE",
   "静怡-女主播": "VHP3HOLVRPL9QYR",
@@ -49,7 +52,7 @@ fieldDecoratorKit.setDecorator({
       noMatchId: "无效的数字演员ID，请联系对接人获取",
       szryyid: "数字演员",
       spzt: "视频主题",
-      kbwa: "视频文案（单条文案建议不超过130个字）",
+      kbwa: "视频文案（单条文案建议不超过150个字）",
       cpt: "产品图（建议上传单元格图片不超过1张）",
     },
     "en-US": {
@@ -60,7 +63,7 @@ fieldDecoratorKit.setDecorator({
         "Invalid Digital Actor ID, please contact the connector to obtain",
       szryyid: "Digital Actor ID",
       spzt: "Video Theme",
-      kbwa: "Video Script (Note: Each script should not exceed 130 characters)",
+      kbwa: "Video Script (Note: Each script should not exceed 150 characters)",
       cpt: "Product Image (Note: Please upload no more than 1 image per cell)",
     },
     "ja-JP": {
@@ -70,7 +73,7 @@ fieldDecoratorKit.setDecorator({
       undefinedId: "無効なデジタルアクターID、接続者に連絡して取得してください",
       szryyid: "デジタルアクターID",
       spzt: "ビデオテーマ",
-      kbwa: "ビデオ文案（単条文案は130字を超えないことをお勧めします。）",
+      kbwa: "ビデオ文案（単条文案は150字を超えないことをお勧めします。）",
       cpt: "製品画像（1セルあたり1枚までアップロードしてください。）",
     },
   },
@@ -158,21 +161,46 @@ fieldDecoratorKit.setDecorator({
     try {
       // 校验必填参数
       if (!vhBizId || !content) {
-        return { code: FieldExecuteCode.Success, data: [] };
+        return {
+          code: FieldExecuteCode.Success,
+          data: [
+            {
+              fileName: "视频制作异常.png",
+              type: "image",
+              url: errorMsgPng,
+            },
+          ],
+        };
       }
       // 校验产品图
       if (imageUrl && imageUrl.length > 1) {
-      }
-      // 校验视频文案
-      if (content && content.length > 130) {
+        console.log("产品图数量超过1张，返回错误图片");
         return {
-          code: FieldExecuteCode.Error,
-          message: String(t("waError")),
+          code: FieldExecuteCode.Success,
+          data: [
+            {
+              fileName: "视频制作异常.png",
+              type: "image",
+              url: errorMsgPng,
+            },
+          ],
         };
       }
-
+      // 校验视频文案
+      if (content && content.length > 150) {
+        return {
+          code: FieldExecuteCode.Success,
+          data: [
+            {
+              fileName: "视频制作异常.png",
+              type: "image",
+              url: errorMsgPng,
+            },
+          ],
+        };
+      }
       let params = {
-        content, // 口播文案
+        content, // 视频文案
         topic, // 视频主题
         vhBizId, // 数字人id
         materialList:

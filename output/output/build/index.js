@@ -15,6 +15,7 @@ var t = _dingtalkDocsCoolApp.fieldDecoratorKit.t;
 // 自己的业务
 var domain = "aibeings-vip.xiaoice.com";
 var baseUrl = "http://".concat(domain);
+var errorMsgPng = "https://commercial-public-static-resource.oss-cn-beijing.aliyuncs.com/digital-human-resource/build/character-ip/character-assets/images/errorMsg.png?t=" + new Date().getTime();
 var vhBizIds = {
   "张淑芬-大健康博主": "VHPUBJB6TBUCMUE",
   "静怡-女主播": "VHP3HOLVRPL9QYR",
@@ -46,7 +47,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
       noMatchId: "无效的数字演员ID，请联系对接人获取",
       szryyid: "数字演员",
       spzt: "视频主题",
-      kbwa: "视频文案（单条文案建议不超过130个字）",
+      kbwa: "视频文案（单条文案建议不超过150个字）",
       cpt: "产品图（建议上传单元格图片不超过1张）"
     },
     "en-US": {
@@ -56,7 +57,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
       undefinedId: "Invalid Digital Actor ID, please contact the connector to obtain",
       szryyid: "Digital Actor ID",
       spzt: "Video Theme",
-      kbwa: "Video Script (Note: Each script should not exceed 130 characters)",
+      kbwa: "Video Script (Note: Each script should not exceed 150 characters)",
       cpt: "Product Image (Note: Please upload no more than 1 image per cell)"
     },
     "ja-JP": {
@@ -66,7 +67,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
       undefinedId: "無効なデジタルアクターID、接続者に連絡して取得してください",
       szryyid: "デジタルアクターID",
       spzt: "ビデオテーマ",
-      kbwa: "ビデオ文案（単条文案は130字を超えないことをお勧めします。）",
+      kbwa: "ビデオ文案（単条文案は150字を超えないことをお勧めします。）",
       cpt: "製品画像（1セルあたり1枚までアップロードしてください。）"
     }
   },
@@ -155,24 +156,43 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
             }
             return _context2.a(2, {
               code: _dingtalkDocsCoolApp.FieldExecuteCode.Success,
-              data: []
+              data: [{
+                fileName: "视频制作异常.png",
+                type: "image",
+                url: errorMsgPng
+              }]
             });
           case 2:
-            // 校验产品图
-            if (imageUrl && imageUrl.length > 1) {}
-            // 校验视频文案
-            if (!(content && content.length > 130)) {
+            if (!(imageUrl && imageUrl.length > 1)) {
               _context2.n = 3;
               break;
             }
+            console.log("产品图数量超过1张，返回错误图片");
             return _context2.a(2, {
-              code: _dingtalkDocsCoolApp.FieldExecuteCode.Error,
-              message: String(t("waError"))
+              code: _dingtalkDocsCoolApp.FieldExecuteCode.Success,
+              data: [{
+                fileName: "视频制作异常.png",
+                type: "image",
+                url: errorMsgPng
+              }]
             });
           case 3:
+            if (!(content && content.length > 150)) {
+              _context2.n = 4;
+              break;
+            }
+            return _context2.a(2, {
+              code: _dingtalkDocsCoolApp.FieldExecuteCode.Success,
+              data: [{
+                fileName: "视频制作异常.png",
+                type: "image",
+                url: errorMsgPng
+              }]
+            });
+          case 4:
             params = {
               content: content,
-              // 口播文案
+              // 视频文案
               topic: topic,
               // 视频主题
               vhBizId: vhBizId,
@@ -184,7 +204,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
               })) || [] // 产品图
             };
             console.log("API1 入参:", params);
-            _context2.n = 4;
+            _context2.n = 5;
             return context.fetch("".concat(baseUrl, "/openapi/aivideo/create"), {
               method: "POST",
               body: JSON.stringify(params),
@@ -194,11 +214,11 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
             }, "xiaobing_dd_ai_excel_video").then(function (res) {
               return res.json();
             });
-          case 4:
+          case 5:
             response = _context2.v;
             console.log("API1 返回结果:", response);
             if (!response.data) {
-              _context2.n = 5;
+              _context2.n = 6;
               break;
             }
             timerRef = null;
@@ -245,27 +265,27 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
                 }, _callee);
               })), 5000);
             }));
-          case 5:
+          case 6:
             console.log("请求失败:", response.message);
             return _context2.a(2, {
               code: _dingtalkDocsCoolApp.FieldExecuteCode.Error,
               message: response.message
             });
-          case 6:
-            _context2.n = 8;
-            break;
           case 7:
-            _context2.p = 7;
+            _context2.n = 9;
+            break;
+          case 8:
+            _context2.p = 8;
             _t = _context2.v;
             console.log("请求出错:", String(_t));
             return _context2.a(2, {
               code: _dingtalkDocsCoolApp.FieldExecuteCode.Error,
               message: String(_t)
             });
-          case 8:
+          case 9:
             return _context2.a(2);
         }
-      }, _callee2, null, [[1, 7]]);
+      }, _callee2, null, [[1, 8]]);
     }));
     function execute(_x, _x2) {
       return _execute.apply(this, arguments);
