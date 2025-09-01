@@ -139,7 +139,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
     label: t("szrfwkey"),
     // 授权平台，告知用户填写哪个平台的信息
     tooltips: t("keyHolder"),
-    instructionsUrl: "https://alidocs.dingtalk.com/i/nodes/YQBnd5ExVEjea40qCklxN6B5JyeZqMmz?doc_type=wiki_doc&iframeQuery=utm_source=portal&utm_medium=portal_recent&rnd=0.16896257984287688"
+    instructionsUrl: "https://alidocs.dingtalk.com/i/nodes/np9zOoBVBQNgzBq3UEobQz0YW1DK0g6l?corpId=ding586d43732787590f35c2f4657eb6378f&utm_medium=im_card&iframeQuery=utm_medium%3Dim_card%26utm_source%3Dim&utm_scene=person_space&utm_source=im"
   },
   // formItemParams 为运行时传入的字段参数，对应字段配置里的 formItems （如引用的依赖字段）
   execute: function () {
