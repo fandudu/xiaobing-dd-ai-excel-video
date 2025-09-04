@@ -200,6 +200,7 @@ fieldDecoratorKit.setDecorator({
         };
       }
       let params = {
+        aigcWatermark: true,
         content, // 视频文案
         topic, // 视频主题
         vhBizId, // 数字人id

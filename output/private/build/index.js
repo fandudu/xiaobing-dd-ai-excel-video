@@ -191,6 +191,7 @@ _dingtalkDocsCoolApp.fieldDecoratorKit.setDecorator({
             });
           case 4:
             params = {
+              aigcWatermark: true,
               content: content,
               // 视频文案
               topic: topic,
